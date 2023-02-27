@@ -9,6 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@kyvg/vue3-notification": "^2.9.0",
         "vue": "^3.2.45"
     },
     "devDependencies": {

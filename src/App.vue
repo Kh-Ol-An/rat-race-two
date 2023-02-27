@@ -1,32 +1,57 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import {ref, onErrorCaptured} from 'vue'
+import Blank from './components/Blank.vue'
+
+const error = ref(null)
+
+onErrorCaptured(() => {
+    error.value = 'Ой-йо-йой!!! Щось пішло не так...'
+})
 </script>
 
 <template>
-    <div>
-        <a href="https://vitejs.dev" target="_blank">
-            <img src="/vite.svg" class="logo" alt="Vite logo"/>
-        </a>
-        <a href="https://vuejs.org/" target="_blank">
-            <img src="./assets/vue.svg" class="logo vue" alt="Vue logo"/>
-        </a>
+    <notifications/>
+
+    <div v-if="error" class="flex h-screen w-full items-center justify-center">
+        <span class="text-center text-2xl font-bold text-opposite">
+            {{ error }}
+        </span>
     </div>
-    <HelloWorld msg="Vite + Vue"/>
+
+    <Blank/>
 </template>
 
-<style scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+<style>
+/* reset autofill for input */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: inset 0 0 0 1000px #1e293b !important; /* Цвет фона */
+    -webkit-text-fill-color: #528d36 !important; /* цвет текста */
+    transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+/* Removing arrows for the input number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }
 </style>

@@ -10,7 +10,10 @@
     },
     "dependencies": {
         "@kyvg/vue3-notification": "^2.9.0",
-        "vue": "^3.2.45"
+        "firebase": "^9.17.1",
+        "vue": "^3.2.45",
+        "vue-router": "^4.1.6",
+        "vuex": "^4.1.0"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^4.0.0",

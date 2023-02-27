@@ -1,12 +1,44 @@
 <script setup>
-import {ref, onErrorCaptured} from 'vue'
-import Blank from './components/Blank.vue'
+import {ref, onErrorCaptured, onMounted} from 'vue'
+import router from './router/index.js'
+import { auth, db, analytics } from "../firebase.js";
 
 const error = ref(null)
 
 onErrorCaptured(() => {
     error.value = 'Ой-йо-йой!!! Щось пішло не так...'
 })
+
+onMounted(() => {
+    // if (localStorage.getItem('token')) {
+        // checkAuth()
+    // }
+})
+
+router.beforeEach((to, from, next) => {
+    // if (to.name !== 'Auth' && !localStorage.getItem('token')) {
+    //     next({
+    //         path: 'auth',
+    //         replace: true,
+    //     })
+    // }
+    //
+    // if (to.name === 'Auth' && localStorage.getItem('token')) {
+    //     next({
+    //         path: '/',
+    //         replace: true,
+    //     })
+    // }
+    //
+    next()
+})
+
+const currentUser = auth.currentUser;
+// const docRef = db.collection("myCollection").doc("myDocument");
+// analytics.logEvent("myEvent");
+
+console.log('currentUser: ', currentUser)
+// console.log('docRef: ', docRef)
 </script>
 
 <template>
@@ -18,7 +50,14 @@ onErrorCaptured(() => {
         </span>
     </div>
 
-    <Blank/>
+    <Suspense>
+        <template #default>
+            <router-view></router-view>
+        </template>
+        <template #fallback>
+            <h1>Loading...</h1>
+        </template>
+    </Suspense>
 </template>
 
 <style>

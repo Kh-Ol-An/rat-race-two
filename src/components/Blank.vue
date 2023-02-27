@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref, computed, watch } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
+import { mapActions, mapGetters } from '../store/helpers.js'
 import BlankIdentification from './modules/BlankIdentification.vue'
 import TransactionAction from './modules/TransactionAction.vue'
 import InfoField from './plugins/InfoField.vue'
@@ -36,14 +37,14 @@ import {
     RICH_CASH_FLOW,
 } from '../database/variables.js'
 
-// const { downloadBlank, uploadBlank } = mapActions()
-// const { getBlank } = mapGetters()
+const { downloadBlank, uploadBlank } = mapActions()
+const { getBlank } = mapGetters()
 
 // eslint-disable-next-line no-await-in-non-async-fn
-// await downloadBlank()
+await downloadBlank()
 
-// const blank = reactive(getBlank.value)
-const blank = reactive(INITIAL_BLANK)
+const blank = reactive(getBlank.value)
+// const blank = reactive(INITIAL_BLANK)
 
 const addGender = (gender) => (blank.gender = gender)
 const addProfession = (profession) => (blank.profession = profession)
@@ -424,14 +425,14 @@ const addDeputies = (quantity) => {
 }
 
 const restart = async () => {
-    // const uploaded = await uploadBlank(INITIAL_BLANK)
-    // uploaded
-    //     ? location.reload()
-    //     : notify({
-    //         type: 'error',
-    //         title: 'Перезавантаження',
-    //         text: 'Почати спочатку не вдалося. Спробуй пізніше.',
-    //     })
+    const uploaded = await uploadBlank(INITIAL_BLANK)
+    uploaded
+        ? location.reload()
+        : notify({
+            type: 'error',
+            title: 'Перезавантаження',
+            text: 'Почати спочатку не вдалося. Спробуй пізніше.',
+        })
 }
 
 const historyBlank = reactive([])
@@ -459,7 +460,7 @@ watch(blank, () => {
         historyBlank.length > MAX_HISTORY && historyBlank.shift()
         historyPeriod.value = historyBlank.length - 1
     }
-    // uploadBlank(blank)
+    uploadBlank(blank)
     makeHistory.value = true
 })
 

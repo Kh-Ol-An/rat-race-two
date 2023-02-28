@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import Input from '../components/plugins/Input.vue'
 import CloseEyeIcon from '../assets/images/icons/CloseEyeIcon.vue'
 import OpenEyeIcon from '../assets/images/icons/OpenEyeIcon.vue'
+import { mapActions, mapGetters } from '../store/helpers.js'
 
 const isRegistration = ref(false)
 const showPassword = ref(true)
@@ -23,8 +24,8 @@ const disabledLogin = computed(
     () => email.value.length === 0 || password.value.length === 0
 )
 
-// const { registration, login } = mapActions()
-// const { getLoading } = mapGetters()
+const { registration, login } = mapActions()
+const { getLoading } = mapGetters()
 </script>
 
 <template>

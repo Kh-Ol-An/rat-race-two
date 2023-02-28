@@ -1,5 +1,6 @@
 <script setup>
 import { ref, toRef, watchEffect } from 'vue'
+import { mapGetters } from '../../store/helpers.js'
 import Input from '../plugins/Input.vue'
 import ActionAdd from '../plugins/ActionAdd.vue'
 import InfoField from '../plugins/InfoField.vue'
@@ -24,7 +25,7 @@ defineEmits(['add:gender', 'add:profession'])
 
 const blank = toRef(props, 'blankProp')
 
-// const { getUser } = mapGetters()
+const { getUser } = mapGetters()
 
 const gender = ref('')
 
@@ -47,8 +48,7 @@ const profession = ref('')
     <div class="flex items-center">
         <InfoField label-classes="text-slate-500" label="Ім'я:">
             <span class="ml-2 text-slate-400">
-<!--                {{ getUser.name || 'Безіменько' }}-->
-                Безіменько
+                {{ getUser.displayName || 'Безіменько' }}
             </span>
         </InfoField>
 

@@ -1,6 +1,7 @@
 <script setup>
 import {ref, onErrorCaptured, onMounted} from 'vue'
 import router from './router/index.js'
+import { mapActions } from './store/helpers.js'
 import { auth, db, analytics } from "../firebase.js";
 
 const error = ref(null)
@@ -9,27 +10,29 @@ onErrorCaptured(() => {
     error.value = 'Ой-йо-йой!!! Щось пішло не так...'
 })
 
+const { checkAuth } = mapActions()
+
 onMounted(() => {
-    // if (localStorage.getItem('token')) {
-        // checkAuth()
-    // }
+    if (localStorage.getItem('token')) {
+        checkAuth()
+    }
 })
 
 router.beforeEach((to, from, next) => {
-    // if (to.name !== 'Auth' && !localStorage.getItem('token')) {
-    //     next({
-    //         path: 'auth',
-    //         replace: true,
-    //     })
-    // }
-    //
-    // if (to.name === 'Auth' && localStorage.getItem('token')) {
-    //     next({
-    //         path: '/',
-    //         replace: true,
-    //     })
-    // }
-    //
+    if (to.name !== 'Auth' && !localStorage.getItem('token')) {
+        next({
+            path: 'auth',
+            replace: true,
+        })
+    }
+
+    if (to.name === 'Auth' && localStorage.getItem('token')) {
+        next({
+            path: '/',
+            replace: true,
+        })
+    }
+
     next()
 })
 

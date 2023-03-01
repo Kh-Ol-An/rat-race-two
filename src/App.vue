@@ -2,20 +2,18 @@
 import {ref, onErrorCaptured, onMounted} from 'vue'
 import router from './router/index.js'
 import { mapActions } from './store/helpers.js'
-import { auth, db, analytics } from "../firebase.js";
+
+const { checkAuth } = mapActions()
+onMounted(() => {
+    if (localStorage.getItem('token')) {
+        checkAuth()
+    }
+})
 
 const error = ref(null)
 
 onErrorCaptured(() => {
     error.value = 'Ой-йо-йой!!! Щось пішло не так...'
-})
-
-const { checkAuth } = mapActions()
-
-onMounted(() => {
-    if (localStorage.getItem('token')) {
-        checkAuth()
-    }
 })
 
 router.beforeEach((to, from, next) => {
@@ -35,13 +33,6 @@ router.beforeEach((to, from, next) => {
 
     next()
 })
-
-const currentUser = auth.currentUser;
-// const docRef = db.collection("myCollection").doc("myDocument");
-// analytics.logEvent("myEvent");
-
-console.log('currentUser: ', currentUser)
-// console.log('docRef: ', docRef)
 </script>
 
 <template>
@@ -53,14 +44,7 @@ console.log('currentUser: ', currentUser)
         </span>
     </div>
 
-    <Suspense>
-        <template #default>
-            <router-view></router-view>
-        </template>
-        <template #fallback>
-            <h1>Loading...</h1>
-        </template>
-    </Suspense>
+    <router-view></router-view>
 </template>
 
 <style>

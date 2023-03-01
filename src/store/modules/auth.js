@@ -1,5 +1,5 @@
 import router from '../../router/index.js'
-import { auth } from '../../../firebase.js'
+import { auth, db } from '../../database/firebase.js'
 import {
     createUserWithEmailAndPassword,
     updateProfile,
@@ -7,33 +7,36 @@ import {
     signOut,
     onAuthStateChanged
 } from "firebase/auth";
+import { collection } from "firebase/firestore";
 import { notify } from '@kyvg/vue3-notification'
 
 export default {
     state: {
         user: {},
-        isLoading: false,
     },
     mutations: {
         setUser(state, user) {
             state.user = user
         },
-        setLoading(state, bool) {
-            state.isLoading = bool
-        },
     },
     actions: {
-        async registration({ commit }, { name, email, password }) {
+        async registration({ dispatch, commit }, { name, email, password }) {
             commit('setLoading', true)
             try {
                 const { user } = await createUserWithEmailAndPassword(auth, email, password)
                 await updateProfile(user, {
                     displayName: name
                 })
-                localStorage.setItem('token', user.accessToken)
                 commit('setUser', user)
+
+                localStorage.setItem('token', user.accessToken)
+
+                const blankCollection = collection(db, `${user.uid}`);
+                dispatch('createBlank', user.uid)
+
                 await router.push('/')
             } catch (err) {
+                console.error('Registration error: ', err)
                 notify({
                     type: 'error',
                     title: 'Реєстрація',
@@ -77,17 +80,19 @@ export default {
                 commit('setLoading', false)
             }
         },
-        async checkAuth({ commit }) {
+        async checkAuth({ dispatch, commit }) {
             commit('setLoading', true)
             try {
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         localStorage.setItem('token', user.accessToken)
-                        return commit('setUser', user)
-                    }
+                        commit('setUser', user)
 
-                    localStorage.removeItem('token')
-                    router.push('/auth')
+                        dispatch('downloadBlank', user.uid)
+                    } else {
+                        localStorage.removeItem('token')
+                        router.push('/auth')
+                    }
                 });
             } catch (err) {
                 localStorage.removeItem('token')
@@ -105,9 +110,6 @@ export default {
     getters: {
         getUser(state) {
             return state.user
-        },
-        getLoading(state) {
-            return state.isLoading
         },
     },
 }

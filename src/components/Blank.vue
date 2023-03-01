@@ -37,14 +37,10 @@ import {
     RICH_CASH_FLOW,
 } from '../database/variables.js'
 
-const { downloadBlank, uploadBlank } = mapActions()
+const { uploadBlank } = mapActions()
 const { getBlank } = mapGetters()
 
-// eslint-disable-next-line no-await-in-non-async-fn
-await downloadBlank()
-
 const blank = reactive(getBlank.value)
-// const blank = reactive(INITIAL_BLANK)
 
 const addGender = (gender) => (blank.gender = gender)
 const addProfession = (profession) => (blank.profession = profession)
@@ -425,7 +421,12 @@ const addDeputies = (quantity) => {
 }
 
 const restart = async () => {
-    const uploaded = await uploadBlank(INITIAL_BLANK)
+    const uploaded = await uploadBlank({
+        ...INITIAL_BLANK,
+        ...{
+            createdAt: new Date(),
+        }
+    })
     uploaded
         ? location.reload()
         : notify({

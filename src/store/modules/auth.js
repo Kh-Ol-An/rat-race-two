@@ -44,12 +44,13 @@ export default {
                 commit('setLoading', false)
             }
         },
-        async login({ commit }, { email, password }) {
+        async login({ dispatch, commit }, { email, password }) {
             commit('setLoading', true)
             try {
                 const { user } = await signInWithEmailAndPassword(auth, email, password)
                 localStorage.setItem('token', user.accessToken)
-                commit('setUser', user)
+                await commit('setUser', user)
+                await dispatch('downloadBlank', user.uid)
                 await router.push('/')
             } catch (err) {
                 notify({
@@ -66,7 +67,7 @@ export default {
             try {
                 await signOut(auth)
                 localStorage.removeItem('token')
-                commit('setUser', {})
+                await commit('setUser', {})
                 await router.push('/auth')
             } catch (err) {
                 notify({

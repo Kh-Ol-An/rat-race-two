@@ -493,8 +493,6 @@ const showModalWin = computed(
 </script>
 
 <template>
-    <NavMenu />
-
     <div
         class="flex max-w-full flex-col items-center justify-center px-8 pt-4 pb-8 md:w-screen md:py-2 md:px-0"
     >

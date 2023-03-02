@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import Input from '../components/plugins/Input.vue'
 import CloseEyeIcon from '../assets/images/icons/CloseEyeIcon.vue'
 import OpenEyeIcon from '../assets/images/icons/OpenEyeIcon.vue'
-import { mapActions, mapGetters } from '../store/helpers.js'
+import { mapActions } from '../store/helpers.js'
 
 const isRegistration = ref(false)
 const showPassword = ref(true)
@@ -25,16 +25,11 @@ const disabledLogin = computed(
 )
 
 const { registration, login } = mapActions()
-const { getLoading } = mapGetters()
 </script>
 
 <template>
     <div class="flex h-screen w-full flex-col items-center justify-center">
-        <div v-if="getLoading">getLoading...</div>
-        <div
-            v-else
-            class="flex flex-col items-center justify-center gap-4 rounded-md bg-slate-800 py-6 px-8 shadow-lg"
-        >
+        <div class="flex flex-col items-center justify-center gap-4 rounded-md bg-slate-800 py-6 px-8 shadow-lg">
             <Input
                 v-if="isRegistration"
                 id="name"

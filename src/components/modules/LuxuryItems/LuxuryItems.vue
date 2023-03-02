@@ -272,7 +272,7 @@ const sellPlane = (id) => emit('sell:plane', id)
                     placeholder="Термін"
                     :disabled="apartmentPrice.length > 0"
                 />
-                <Add
+                <ActionAdd
                     :first-value="apartmentPayment"
                     :second-value="apartmentTerm"
                     @add="buyApartmentOnCredit"

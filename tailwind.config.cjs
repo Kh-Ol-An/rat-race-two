@@ -36,6 +36,9 @@ module.exports = {
             animation: {
                 flashing: 'flashing 1s ease-in-out infinite',
             },
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+            }
         },
     },
     plugins: [],

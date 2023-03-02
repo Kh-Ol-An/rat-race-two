@@ -1,14 +1,13 @@
 <script setup>
-import {ref, onErrorCaptured, onMounted} from 'vue'
+import { ref, onErrorCaptured } from 'vue'
 import router from './router/index.js'
-import { mapActions } from './store/helpers.js'
+import { mapActions, mapGetters } from './store/helpers.js'
+import Loading from './components/Loading.vue'
 
 const { checkAuth } = mapActions()
-onMounted(() => {
-    if (localStorage.getItem('token')) {
-        checkAuth()
-    }
-})
+checkAuth()
+
+const { getLoading } = mapGetters()
 
 const error = ref(null)
 
@@ -36,6 +35,8 @@ router.beforeEach((to, from, next) => {
 </script>
 
 <template>
+    <Loading v-if="getLoading" />
+
     <notifications/>
 
     <div v-if="error" class="flex h-screen w-full items-center justify-center">

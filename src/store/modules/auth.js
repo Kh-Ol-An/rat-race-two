@@ -1,5 +1,5 @@
 import router from '../../router/index.js'
-import { auth, db } from '../../database/firebase.js'
+import { auth } from '../../database/firebase.js'
 import {
     createUserWithEmailAndPassword,
     updateProfile,
@@ -7,7 +7,6 @@ import {
     signOut,
     onAuthStateChanged
 } from "firebase/auth";
-import { collection } from "firebase/firestore";
 import { notify } from '@kyvg/vue3-notification'
 
 export default {
@@ -31,8 +30,7 @@ export default {
 
                 localStorage.setItem('token', user.accessToken)
 
-                const blankCollection = collection(db, `${user.uid}`);
-                dispatch('createBlank', user.uid)
+                await dispatch('createBlank', user.uid)
 
                 await router.push('/')
             } catch (err) {

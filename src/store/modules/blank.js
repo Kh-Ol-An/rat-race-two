@@ -1,6 +1,6 @@
 import { notify } from '@kyvg/vue3-notification'
 import { INITIAL_BLANK } from '../../database/variables.js'
-import { doc, setDoc, addDoc, collection, getDocs, getDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc, collection, getDocs, getDoc } from "firebase/firestore";
 import { db } from "../../database/firebase.js";
 
 export default {
@@ -40,19 +40,20 @@ export default {
                 commit('setLoading', false)
             }
         },
-        async uploadBlank({ commit }, blank) {
+        async updateBlank({ commit }, blank) {
             commit('setLoading', true)
             try {
-                const blankCollection = collection(db, `${blank.userUid}`);
-                const documentCollection = doc(blankCollection, `${blank.blankName}`)
-                await setDoc(documentCollection, {
+                const myDoc = doc(db, `${blank.userUid}`, `${blank.blankName}`);
+                await updateDoc(myDoc, {
                     ...blank,
                     ...{
                         updatedAt: new Date(),
                     }
                 });
 
-                const documentSnap = await getDoc(documentCollection);
+                const blankCollection = collection(db, `${blank.userUid}`)
+                const documentCollection = doc(blankCollection, `${blank.blankName}`)
+                const documentSnap = await getDoc(documentCollection)
                 documentSnap.exists() && commit('setBlank', documentSnap.data())
 
                 notify({
@@ -76,11 +77,12 @@ export default {
             }
         },
         async downloadBlank({ commit, state }, userUid) {
+            commit('setLoading', true)
             try {
                 const myCollectionRef = collection(db, `${userUid}`);
                 const querySnapshot = await getDocs(myCollectionRef);
 
-                commit('setBlank', querySnapshot.docs[0].data())
+                querySnapshot.docs.length && commit('setBlank', querySnapshot.docs[0].data())
             } catch (err) {
                 console.error('Download blank error: ', err)
                 notify({

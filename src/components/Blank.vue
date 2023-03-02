@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed, watch } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
-import { mapActions, mapGetters } from '../store/helpers.js'
+import { mapActions } from '../store/helpers.js'
 import BlankIdentification from './modules/BlankIdentification.vue'
 import TransactionAction from './modules/TransactionAction.vue'
 import InfoField from './plugins/InfoField.vue'
@@ -37,10 +37,16 @@ import {
     RICH_CASH_FLOW,
 } from '../database/variables.js'
 
-const { uploadBlank } = mapActions()
-const { getBlank } = mapGetters()
+const props = defineProps({
+    downloadedBlank: {
+        type: Object,
+        required: true,
+    }
+})
 
-const blank = reactive(getBlank.value)
+const { updateBlank } = mapActions()
+
+const blank = reactive(props.downloadedBlank)
 
 const addGender = (gender) => (blank.gender = gender)
 const addProfession = (profession) => (blank.profession = profession)
@@ -421,13 +427,15 @@ const addDeputies = (quantity) => {
 }
 
 const restart = async () => {
-    const uploaded = await uploadBlank({
+    const updated = await updateBlank({
         ...INITIAL_BLANK,
         ...{
+            userUid: blank.userUid,
+            blankName: blank.blankName,
             createdAt: new Date(),
         }
     })
-    uploaded
+    updated
         ? location.reload()
         : notify({
             type: 'error',
@@ -461,7 +469,7 @@ watch(blank, () => {
         historyBlank.length > MAX_HISTORY && historyBlank.shift()
         historyPeriod.value = historyBlank.length - 1
     }
-    uploadBlank(blank)
+    updateBlank(blank)
     makeHistory.value = true
 })
 

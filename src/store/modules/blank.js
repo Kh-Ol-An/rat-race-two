@@ -1,7 +1,7 @@
 import { notify } from '@kyvg/vue3-notification'
 import { INITIAL_BLANK } from '../../database/variables.js'
-import { doc, setDoc, updateDoc, collection, getDocs, getDoc } from "firebase/firestore";
-import { db } from "../../database/firebase.js";
+import { doc, setDoc, updateDoc, collection, getDocs, getDoc } from 'firebase/firestore';
+import { db } from '../../database/firebase.js';
 
 export default {
     state: {
@@ -79,10 +79,10 @@ export default {
         async downloadBlank({ commit, state }, userUid) {
             commit('setLoading', true)
             try {
-                const myCollectionRef = collection(db, `${userUid}`);
-                const querySnapshot = await getDocs(myCollectionRef);
+                const blankCollection = collection(db, `${userUid}`)
+                const documentSnap = await getDocs(blankCollection)
 
-                querySnapshot.docs.length && commit('setBlank', querySnapshot.docs[0].data())
+                !documentSnap.empty && commit('setBlank', documentSnap.docs[0].data())
             } catch (err) {
                 console.error('Download blank error: ', err)
                 notify({

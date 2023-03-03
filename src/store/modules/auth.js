@@ -1,13 +1,16 @@
 import router from '../../router/index.js'
-import { auth } from '../../database/firebase.js'
+import {auth, db} from '../../database/firebase.js'
 import {
     createUserWithEmailAndPassword,
     updateProfile,
     signInWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithPopup,
 } from "firebase/auth";
 import { notify } from '@kyvg/vue3-notification'
+import {collection, getDocs} from "firebase/firestore";
 
 export default {
     state: {
@@ -19,6 +22,32 @@ export default {
         },
     },
     actions: {
+        async googleAuth({ dispatch, commit }) {
+            commit('setLoading', true)
+            try {
+                const provider = new GoogleAuthProvider();
+                const { user } = await signInWithPopup(auth, provider);
+                commit('setUser', user)
+
+                localStorage.setItem('token', user.accessToken)
+
+                const userUid = user.uid
+                const blankCollection = collection(db, `${userUid}`)
+                const documentSnap = await getDocs(blankCollection)
+                documentSnap.empty ? await dispatch('createBlank', userUid) : await dispatch('downloadBlank', userUid)
+
+                await router.push('/')
+            } catch (err) {
+                console.error('Google Auth error: ', err)
+                notify({
+                    type: 'error',
+                    title: 'Google авторизація',
+                    text: err.message,
+                })
+            } finally {
+                commit('setLoading', false)
+            }
+        },
         async registration({ dispatch, commit }, { name, email, password }) {
             commit('setLoading', true)
             try {

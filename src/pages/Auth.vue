@@ -1,9 +1,10 @@
 <script setup>
 import { computed, ref } from 'vue'
+import { mapActions } from '../store/helpers.js'
 import Input from '../components/plugins/Input.vue'
 import CloseEyeIcon from '../assets/images/icons/CloseEyeIcon.vue'
 import OpenEyeIcon from '../assets/images/icons/OpenEyeIcon.vue'
-import { mapActions } from '../store/helpers.js'
+import GoogleIcon from '../assets/images/icons/GoogleIcon.vue';
 
 const isRegistration = ref(false)
 const showPassword = ref(true)
@@ -24,7 +25,7 @@ const disabledLogin = computed(
     () => email.value.length === 0 || password.value.length === 0
 )
 
-const { registration, login } = mapActions()
+const { googleAuth, registration, login } = mapActions()
 </script>
 
 <template>
@@ -37,12 +38,14 @@ const { registration, login } = mapActions()
                 type="text"
                 placeholder="Ім'я"
             />
+
             <Input
                 id="email"
                 v-model:value="email"
                 type="text"
                 placeholder="Пошта"
             />
+
             <div class="relative w-full">
                 <Input
                     id="password"
@@ -66,6 +69,7 @@ const { registration, login } = mapActions()
                     <OpenEyeIcon v-else color="stroke-primary" />
                 </button>
             </div>
+
             <div v-if="isRegistration" class="relative w-full">
                 <Input
                     id="repeat-password"
@@ -89,6 +93,16 @@ const { registration, login } = mapActions()
                     <OpenEyeIcon v-else color="stroke-primary" />
                 </button>
             </div>
+
+            <button
+                class="h-8 w-full flex items-center justify-center gap-3 rounded border border-primary text-primary"
+                type="button"
+                title="Увійти через Google"
+                @click="googleAuth"
+            >
+                Увійти через <GoogleIcon width="18px" height="18px" />
+            </button>
+
             <p class="text-center text-sm text-slate-400">
                 {{
                     isRegistration
@@ -103,6 +117,7 @@ const { registration, login } = mapActions()
                     {{ isRegistration ? 'увійти' : 'зареєструватися' }}
                 </button>
             </p>
+
             <button
                 v-if="isRegistration"
                 :class="[
@@ -117,6 +132,7 @@ const { registration, login } = mapActions()
             >
                 Зареєструватися
             </button>
+
             <button
                 v-else
                 :class="[

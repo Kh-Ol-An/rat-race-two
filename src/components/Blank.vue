@@ -490,12 +490,25 @@ const showModalWin = computed(
         blank.whimsAndFancies.length > 0 &&
         !blank.win
 )
+
+const showTestMessage = ref(true)
+setTimeout(() => showTestMessage.value = false, 1000 * 10)
 </script>
 
 <template>
     <div
         class="flex max-w-full flex-col items-center justify-center px-8 pt-4 pb-8 md:w-screen md:py-2 md:px-0"
     >
+        <p
+            :class="[
+                'max-h-0 max-w-5xl overflow-hidden px-4 text-center text-xs text-slate-400 transition-all duration-1000',
+                 showTestMessage && 'max-h-36'
+                 ]"
+        >
+            Ми перебуваємо в стадії тестування нашого додатка і будемо вдячні, якщо ви повідомите нам про будь-які помилки. Ми завжди раді почути ваші відгуки та пропозиції за адресою:
+            <a href="mailto:hroshi.ye@gmail.com" class="font-bold">hroshi.ye@gmail.com</a>
+        </p>
+
         <h1
             class="p-4 text-center text-4xl font-bold text-slate-300 md:p-2 md:text-xl"
         >
@@ -746,6 +759,11 @@ const showModalWin = computed(
                 />
             </div>
         </div>
+
+        <p class="max-w-5xl mt-4 px-4 text-center text-xs text-slate-400">
+            Ми перебуваємо в стадії тестування нашого додатка і будемо вдячні, якщо ви повідомите нам про будь-які помилки. Ми завжди раді почути ваші відгуки та пропозиції за адресою:
+            <a href="mailto:hroshi.ye@gmail.com" class="font-bold">hroshi.ye@gmail.com</a>
+        </p>
 
         <Modal
             :show="showModalRich"

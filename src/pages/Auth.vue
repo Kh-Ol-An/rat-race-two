@@ -4,7 +4,8 @@ import { mapActions } from '../store/helpers.js'
 import Input from '../components/plugins/Input.vue'
 import CloseEyeIcon from '../assets/images/icons/CloseEyeIcon.vue'
 import OpenEyeIcon from '../assets/images/icons/OpenEyeIcon.vue'
-import GoogleIcon from '../assets/images/icons/GoogleIcon.vue';
+import GoogleIcon from '../assets/images/icons/GoogleIcon.vue'
+import FacebookIcon from '../assets/images/icons/FacebookIcon.vue'
 
 const isRegistration = ref(false)
 const showPassword = ref(true)
@@ -108,7 +109,7 @@ const { providerAuth, registration, login } = mapActions()
                 title="Увійти через Facebook"
                 @click="providerAuth('facebook')"
             >
-                Увійти через Facebook
+                Увійти через <FacebookIcon width="18px" height="18px" />
             </button>
 
             <p class="text-center text-sm text-slate-400">

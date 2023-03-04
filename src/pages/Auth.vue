@@ -25,7 +25,7 @@ const disabledLogin = computed(
     () => email.value.length === 0 || password.value.length === 0
 )
 
-const { googleAuth, registration, login } = mapActions()
+const { providerAuth, registration, login } = mapActions()
 </script>
 
 <template>
@@ -98,9 +98,17 @@ const { googleAuth, registration, login } = mapActions()
                 class="h-8 w-full flex items-center justify-center gap-3 rounded border border-primary text-primary"
                 type="button"
                 title="Увійти через Google"
-                @click="googleAuth"
+                @click="providerAuth"
             >
                 Увійти через <GoogleIcon width="18px" height="18px" />
+            </button>
+            <button
+                class="h-8 w-full flex items-center justify-center gap-3 rounded border border-primary text-primary"
+                type="button"
+                title="Увійти через Facebook"
+                @click="providerAuth('facebook')"
+            >
+                Увійти через Facebook
             </button>
 
             <p class="text-center text-sm text-slate-400">

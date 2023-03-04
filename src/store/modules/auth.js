@@ -7,6 +7,7 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
+    FacebookAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
 import { notify } from '@kyvg/vue3-notification'
@@ -22,11 +23,14 @@ export default {
         },
     },
     actions: {
-        async googleAuth({ dispatch, commit }) {
+        async providerAuth({ dispatch, commit }, type = 'google') {
             commit('setLoading', true)
             try {
-                const provider = new GoogleAuthProvider();
-                const { user } = await signInWithPopup(auth, provider);
+                const provider = type === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider()
+                console.log(type)
+                console.log(provider)
+                const { user } = await signInWithPopup(auth, provider)
+                console.log(user)
                 commit('setUser', user)
 
                 localStorage.setItem('token', user.accessToken)

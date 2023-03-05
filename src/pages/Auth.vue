@@ -103,14 +103,14 @@ const { providerAuth, registration, login } = mapActions()
             >
                 Увійти через <GoogleIcon width="18px" height="18px" />
             </button>
-            <button
-                class="h-8 w-full flex items-center justify-center gap-3 rounded border border-primary text-primary"
-                type="button"
-                title="Увійти через Facebook"
-                @click="providerAuth('facebook')"
-            >
-                Увійти через <FacebookIcon width="18px" height="18px" />
-            </button>
+<!--            <button-->
+<!--                class="h-8 w-full flex items-center justify-center gap-3 rounded border border-primary text-primary"-->
+<!--                type="button"-->
+<!--                title="Увійти через Facebook"-->
+<!--                @click="providerAuth('facebook')"-->
+<!--            >-->
+<!--                Увійти через <FacebookIcon width="18px" height="18px" />-->
+<!--            </button>-->
 
             <p class="text-center text-sm text-slate-400">
                 {{

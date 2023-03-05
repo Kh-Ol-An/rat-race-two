@@ -23,14 +23,14 @@ export default {
         },
     },
     actions: {
-        async providerAuth({ dispatch, commit }, type = 'google') {
+        async providerAuth({ dispatch, commit }, e, type = 'google') {
             commit('setLoading', true)
             try {
                 const provider = type === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider()
-                console.log(type)
-                console.log(provider)
+                // console.log('type: ', type)
+                // console.log('provider: ', provider)
                 const { user } = await signInWithPopup(auth, provider)
-                console.log(user)
+                // console.log('user: ', user)
                 commit('setUser', user)
 
                 localStorage.setItem('token', user.accessToken)

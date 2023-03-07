@@ -38,8 +38,6 @@ const buy = () => {
 
 const gainedDeputies = ref('')
 const add = () => {
-    console.log(Number(removingSpaces(gainedDeputies.value)))
-    console.log(Number(removingSpaces(potentialDeputies.value)))
     if (
         Number(removingSpaces(gainedDeputies.value)) >
         Number(removingSpaces(potentialDeputies.value))

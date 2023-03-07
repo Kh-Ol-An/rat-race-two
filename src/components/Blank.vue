@@ -15,7 +15,7 @@ import IncomeInfo from './modules/IncomeInfo.vue'
 import IncomeList from './modules/Incomes/IncomeList.vue'
 import SharesList from './modules/Shares/SharesList.vue'
 import AssetList from './modules/Assets/AssetList.vue'
-import DeputyList from './modules/DeputyList.vue'
+import DeputiesAction from './modules/DeputiesAction.vue'
 import BlankActions from './modules/BlankActions.vue'
 import Modal from './plugins/Modal.vue'
 import MoneyIcon from '../assets/images/icons/MoneyIcon.vue'
@@ -740,7 +740,7 @@ setTimeout(() => showTestMessage.value = false, 1000 * 10)
                         v-if="blank.rich"
                         class="flex flex-col gap-2 pt-4 pr-8 pl-4 pb-8 md:px-2"
                     >
-                        <DeputyList
+                        <DeputiesAction
                             :blank-prop="blank"
                             @buy="buyDeputies"
                             @add="addDeputies"

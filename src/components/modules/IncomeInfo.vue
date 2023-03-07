@@ -19,9 +19,13 @@ defineProps({
     },
 })
 
-defineEmits(['remove:deputies'])
+const emit = defineEmits(['remove:deputies'])
 
 const showModal = ref(false)
+const removeDeputies = () => {
+    emit('remove:deputies')
+    showModal.value = false
+}
 </script>
 
 <template>
@@ -69,7 +73,7 @@ const showModal = ref(false)
         <Modal
             :show="showModal"
             confirm="Видалити"
-            @confirm="$emit('remove:deputies')"
+            @confirm="removeDeputies"
             @cancel="showModal = false"
         >
             <h4 class="mx-auto text-center text-2xl font-bold text-opposite">

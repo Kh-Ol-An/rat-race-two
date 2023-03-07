@@ -39,7 +39,7 @@ const change = () => emit('change', !props.checked)
             class="relative mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-slate-400 transition-all duration-300 peer-checked:border-primary peer-checked:bg-primary"
         >
             <div
-                class="h-3 w-1.5 -translate-y-px rotate-45 border-r-2 border-b-2 border-slate-800 md:border-slate-900"
+                class="h-3 w-1.5 -translate-y-px rotate-45 border-r-2 border-b-2 border-slate-800"
             ></div>
         </div>
     </label>
